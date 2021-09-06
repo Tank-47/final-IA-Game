@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <title>flip card game</title>
+    <link rel="stylesheet" type="text/css" href="flipCardGameStyle.css">
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+</head>
+<body>
+	
+  <div class="cardGame">
+       <div class="card" id="a1" onclick="flip('a1',0)">
+           <div class="cover">
+		<img src="card/tupian.jpg">
+           </div>
+           <div class="back">
+               <img src="">
+           </div>
+       </div>
+       <div class="card" id="a2" onclick="flip('a2',1)">
+           <div class="cover">
+	<img src="card/tupian.jpg">
+           </div>
+           <div class="back">
+               <img src="">
+           </div>
+       </div>
+       <div class="card" id="a3" onclick="flip('a3',2)">
+           <div class="cover">
+<img src="card/tupian.jpg">
+           </div>
+           <div class="back">
+               <img src="">
+           </div>
+       </div>
+       <div class="card" id="a4" onclick="flip('a4',3)">
+           <div class="cover">
+<img src="card/tupian.jpg">
+           </div>
+           <div class="back">
+               <img src="">
+           </div>
+       </div>
+       </div>
+       <br>
+       <div class="cardGame">
+       <div class="card" id="a5" onclick="flip('a5',4)">
+           <div class="cover">
+<img src="card/tupian.jpg">
+           </div>
+           <div class="back">
+               <img src="">
+           </div>
+       </div>
+       <div class="card" id="a6" onclick="flip('a6',5)">
+           <div class="cover">
+<img src="card/tupian.jpg">
+           </div>
+           <div class="back">
+               <img src="">
+           </div>
+       </div>
+       <div class="card" id="a7" onclick="flip('a7',6)">
+           <div class="cover">
+<img src="card/tupian.jpg">
+           </div>
+           <div class="back">
+               <img src="">
+           </div>
+       </div>
+       <div class="card" id="a8" onclick="flip('a8',7)">
+           <div class="cover">
+<img src="card/tupian.jpg">
+           </div>
+           <div class="back">
+               <img src="">
+           </div>
+       </div>
+    </div>
+      <br>
+       <div class="cardGame">
+       <div class="card" id="b1" onclick="flip('b1',8)">
+           <div class="cover">
+<img src="card/tupian.jpg">
+           </div>
+           <div class="back">
+               <img src="">
+           </div>
+       </div>
+       <div class="card" id="b2" onclick="flip('b2',9)">
+           <div class="cover">
+<img src="card/tupian.jpg">
+           </div>
+           <div class="back">
+               <img src="">
+           </div>
+       </div>
+    
+    
+       <div class="card" id="b3" onclick="flip('b3',10)">
+           <div class="cover">
+<img src="card/tupian.jpg">
+           </div>
+           <div class="back">
+               <img src="">
+           </div>
+       </div>
+       <div class="card" id="b4" onclick="flip('b4',11)">
+           <div class="cover">
+    <img src="card/tupian.jpg">
+           </div>
+           <div class="back">
+               <img src="">
+           </div>
+       </div>
+       </div>
+       <br>
+       <div class="cardGame">
+       <div class="card" id="b5" onclick="flip('b5',12)">
+           <div class="cover">
+<img src="card/tupian.jpg">
+           </div>
+           <div class="back">
+               <img src="">
+           </div>
+       </div>
+
+       <div class="card" id="b6" onclick="flip('b6',13)">
+           <div class="cover">
+<img src="card/tupian.jpg">
+           </div>
+           <div class="back">  
+               <img src="">
+           </div>
+       </div>
+       <div class="card" id="b7" onclick="flip('b7',14)">
+           <div class="cover">
+<img src="card/tupian.jpg">
+           </div>
+           <div class="back">
+               <img src="">
+           </div>
+       </div>
+       <div class="card" id="b8" onclick="flip('b8',15)">
+           <div class="cover">
+<img src="card/tupian.jpg">
+           </div>
+           <div class="back">
+               <img src="">
+           </div>
+       </div>
+    </div>
+     <div class="timer">timer</div>
+	
+    <script type="text/javascript">
+        var timer = document.querySelector(".timer");
+        var cards = [1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8];
+        var fliped = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+        var count = 0;
+        var lastOne;
+        var lastOneID;
+        var matched=0;
+        var checked=1;
+        var atext="a";
+        var btext="b";
+        var time;
+        var step=999;
+        var round;
+        var url = window.location.search;
+        var anothergame;
+        var currentX;
+        var currentY;
+        var score=0;
+        var random=[1,2,3,4,5,6,7,8,9];
+        if(url.indexOf("?")!=1){
+            anothergame = url.substr(url.indexOf("=")+1)
+            console.log(anothergame);
+            var i=0;
+            var l=0;
+            do{
+                if(anothergame[i]==","){
+                    l++;
+                }
+                else{
+                    switch(l){
+                            case(0):currentX=parseInt(anothergame[i]);
+                                    console.log(currentX);
+                                    break;
+                            case(1):currentY=parseInt(anothergame[i]);
+                                    console.log(currentY);
+                                    break;
+                            case(2):round=parseInt(anothergame[i]);
+                                    console.log(round);
+                                    break;
+                            case(3):score+=anothergame[i];
+                                    console.log(score);
+                                    break;
+                                    case(4):random[(l-4)]=parseInt(anothergame[i]);
+                                            break;
+                                    case(5):random[(l-4)]=parseInt(anothergame[i]);
+                                            break;
+                                    case(6):random[(l-4)]=parseInt(anothergame[i]);
+                                            break;
+                                    case(7):random[(l-4)]=parseInt(anothergame[i]);
+                                            break;
+                                    case(8):random[(l-4)]=parseInt(anothergame[i]);
+                                            break;
+                                    case(9):random[(l-4)]=parseInt(anothergame[i]);
+                                            break;
+                                    case(10):random[(l-4)]=parseInt(anothergame[i]);
+                                            break;
+                                    case(11):random[(l-4)]=parseInt(anothergame[i]);
+                                            break;
+                                    case(12):random[(l-4)]=parseInt(anothergame[i]);
+                                            break;
+                    }
+                }
+                i++;
+            }while(anothergame[i]!=null);
+            score=parseInt(score);
+            console.log(score);
+            if(round==1){
+                time = 120;
+                step=32;
+            }
+            if(round==3){
+                time = 90;
+                step=16;
+            }
+            if(round==5){
+                time=60;
+                timer();
+            }
+            if(round==7){
+                time=30;
+                timer();
+            }
+        }
+        for(i=0;i<100;i++){
+            radomcards();
+        }
+        function radomcards(){
+            var temp,First,Second;
+            First = Math.floor(Math.random() * (cards.length-1));
+            Second = Math.floor(Math.random() * (cards.length-1));
+            temp = cards[First];
+            cards[First] = cards[Second];
+            cards[Second] = temp;
+        }
+        for(x=0;x<16;x++){
+            var id;
+            if(x<8){
+                id=atext+(x+1);
+            } 
+            else{
+                id=btext+(x+1-8)
+            }
+            switch(cards[x]){
+                    case(1):var card = document.getElementById(id);
+                            cardcovered = card.children;
+                            cardcovered[1].getElementsByTagName("img")[0].src="card/11.JPG";
+                            break;
+                    case(2):var card = document.getElementById(id);
+                            cardcovered = card.children;
+                            cardcovered[1].getElementsByTagName("img")[0].src="card/12.JPG"
+                            break;
+                    case(3):var card = document.getElementById(id);
+                            cardcovered = card.children;
+                            cardcovered[1].getElementsByTagName("img")[0].src="card/13.JPG"
+                            break;
+                    case(4):var card = document.getElementById(id);
+                            cardcovered = card.children;
+                            cardcovered[1].getElementsByTagName("img")[0].src="card/14.JPG"
+                            break;
+                    case(5):var card = document.getElementById(id);
+                            cardcovered = card.children;
+                            cardcovered[1].getElementsByTagName("img")[0].src="card/15.JPG"
+                            break;
+                    case(6):var card = document.getElementById(id);
+                            cardcovered = card.children;
+                            cardcovered[1].getElementsByTagName("img")[0].src="card/16.JPG"
+                            break;
+                    case(7):var card = document.getElementById(id);
+                            cardcovered = card.children;
+                            cardcovered[1].getElementsByTagName("img")[0].src="card/17.JPG"
+                            break;
+                    case(8):var card = document.getElementById(id);
+                            cardcovered = card.children;
+                            cardcovered[1].getElementsByTagName("img")[0].src="card/18.JPG"
+                            break;/*
+                    case(9):var card = document.getElementById(id);
+                            cardcovered = card.children;
+                            cardcovered[1].getElementsByTagName("img")[0].src="19.JPG"
+                            break;
+                    case(10):var card = document.getElementById(id);
+                            cardcovered = card.children;
+                            cardcovered[1].getElementsByTagName("img")[0].src="20.JPG"
+                            break;*/
+            }
+        }
+        function timer(){
+            time=time-1;
+            setTimeout(function(){timer();},1000)
+        }
+        function flip(cardID,num){
+            console.log("check"+checked);
+            if(fliped[num]==0){
+                if(checked==1){
+                    fliped[num]=1;
+                    count++;
+                    var card = document.getElementById(cardID);
+                   cardcovered = card.children;
+                   cardcovered[0].style.transform = "rotateY(180deg)";
+                   cardcovered[1].style.transform = "rotateY(0deg)";
+                        console.log("count"+count);
+                        if(count%2==0){
+                            checked=0;
+                            console.log("check"+checked);
+                            setTimeout(function(){check(cardID,num);},2000)
+                            setTimeout(function(){
+                                lastOne=num;
+                                lastOneID=cardID;
+                                checked=1;
+                            },2100)
+                        }
+                        else{
+                           lastOne=num; 
+                            lastOneID=cardID;
+                        }   
+                }
+            }
+        }   
+        function check(cardID,num){
+            console.log(cards[num]);
+            console.log(cards[lastOne]);
+            step=step-1;
+            if(cards[lastOne]==cards[num]){
+                matched++;
+            }
+            else{
+                var card = document.getElementById(cardID);
+                cardcovered = card.children;
+                cardcovered[0].style.transform = "rotateY(0deg)";
+                cardcovered[1].style.transform = "rotateY(-180deg)";
+                fliped[num]=0;
+                var card = document.getElementById(lastOneID);
+                cardcovered = card.children;
+                cardcovered[0].style.transform = "rotateY(0deg)";
+                cardcovered[1].style.transform = "rotateY(-180deg)";
+                fliped[lastOne]=0;
+            }
+            
+            if(matched==8){
+                win();
+            }
+            if(step<=0){
+                lose();
+            }
+        }
+        
+        function win(){
+            console.log(anothergame);
+            score+=round*1000;
+            round=round+1;
+            anothergame=[currentX,currentY,round,score,random];
+            console.log(anothergame);
+            setTimeout(function(){
+                window.location.href="index.html?value="+anothergame;
+            },2000)
+            
+        }
+        function lose(){
+            window.location.href="index.html?value="+anothergame;
+        }
+        
+
+        
+        setTimeout(function(){
+            console.log("OK");
+            $(".back").css({transform:"rotateY(-180deg)"});
+            $(".card").css({transform:"rotateY(-360deg)"});
+        },3000);
+	
+	    reset();
+        function reset(){
+            for(var i = 1; i<9; i++){
+            $('#a'+ i+'').removeAttr("onclick");
+            $('#b'+ i+'').removeAttr("onclick");
+            }
+        }
+
+        setTimeout(function(){  
+            for(var i = 1; i<9; i++){
+           // $('#a'+ i+'').attr("onclick",'flip("a'+ i+'", ""'+ x+'"")');
+           $('#a'+ i+'').attr("onclick",'flip("a'+ i+'",'+Number(i-1)+')');
+           $('#b'+ i+'').attr("onclick",'flip("b'+ i+'",'+Number(i+7)+')');
+            console.log(i-1);
+            }
+        },3100);
+        
+        setInterval(showTimer,1000);
+        function showTimer(){
+            time = time -1
+            timer.innerHTML ="Level "+round+ ": "+time;
+            if(time == 0){
+                lose();
+            }
+        }
+        
+        console.log(new Date().getSeconds());
+	</script>
+</body>
+</html>

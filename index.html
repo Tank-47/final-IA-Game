@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="css/mainStyles.css">
+    <meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
+</head>
+<body>
+    <div class="screen">
+        <div class="all">
+           <div class="score"></div>
+            <div class="camera">
+                 <div class="charactermap">
+                    <img class="map">
+                     <img class="item" src="item.png">
+                     <img class="item" src="item.png">
+                     <img class="item" src="item.png">
+                     <img class="item" src="item.png">
+                     <img class="item" src="item.png">
+                     <img class="item" src="item.png">
+                     <img class="item" src="item.png">
+                     <img class="item" src="item.png">
+                     <img class="item" src="item.png">
+                    <img id="door" src="exit.png">
+                </div>
+                <div class="center">
+                   <div class="character">
+                       <img src="characterfin.png">
+                   </div>
+               </div>
+            </div>
+            <div class="walk">
+               <div id="control">
+                    <div id="up" onclick="move(87)">
+                        <img class="direction" src="fangxiang1.png">
+                    </div>
+                   
+                    <div id="left" onclick="move(65)"><img class="direction" src="fangxiang1.png"></div>
+                    <div id="right" onclick="move(68)"><img class="direction" src="fangxiang1.png"></div>
+                     <div id="down" onclick="move(83)">
+                   <img class="direction" src="fangxiang1.png"></div>
+                </div>
+            </div>
+             <div id="talk">
+                 <div id="choiceposition"></div>
+                 <div id="word"></div>
+             </div>
+        </div>
+        <div id="escapemessage"></div>
+        <div id="finalscore"></div>
+        <button id="reset" onclick="resetGame()">重新开始</button>
+    </div>
+    <script type="text/javascript">
+        var gameScore = document.querySelector(".score");
+        var direction = document.getElementsByClassName("direction");
+        var charactermap=document.getElementsByClassName("charactermap")[0];
+        var charactercamera=document.getElementsByClassName("camera")[0];
+        var character=document.getElementsByClassName("character")[0].children[0];
+        var animationcount=0;
+        var charactertransfrom=0;
+        var ancount=0;
+        var pixelSize = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--pixel-size'));
+        var camera_left;
+        var camera_top;
+        var mapA=[1,1,0,1,1,0,1,1,0,1];
+        var mapB=[1,0,1,0,1,1,1,0,0,1];
+        var mapC=[1,1,1,1,0,1,0,1,0,1];
+        var mapD=[1,0,0,0,0,1,0,1,0,1];
+        var mapE=[1,1,1,1,1,1,0,1,1,1];
+        var mapF=[1,0,0,0,1,0,1,0,1,0];
+        var mapG=[1,1,0,1,1,0,1,0,1,1];
+        var mapH=[0,1,0,0,1,0,1,0,0,1];
+        var mapI=[1,1,1,0,1,1,1,1,0,1];
+        var mapJ=[1,0,0,1,1,0,0,1,1,1];
+        var mapall =[mapA,mapB,mapC,mapD,mapE,mapF,mapG,mapH,mapI,mapJ];
+        var currentX;
+        var currentY;
+        var checkMap;
+        var stop=0;
+        var choices;
+        var div= document.getElementById("talk");
+        var items = document.getElementsByClassName("item");
+        var itemsnum=0;
+        var score=0;
+        var windowidth0=window.innerWidth;
+        var windowidth=window.innerWidth;
+        console.log(windowidth);
+        var url = window.location.search;
+        var round;
+        var random=[1,2,3,4,5,6,7,8,9];
+        var checkwin=0;
+        var talkwidth=0;
+        var scoremessage=document.querySelector(".score");
+        start();
+        resize();
+        function resize(){
+            windowidth=window.innerWidth;
+            if(windowidth!=windowidth0){
+                windowidth0=windowidth;
+                camera_left = camera_left/pixelSize;
+                camera_top = camera_top/pixelSize;
+                charactertransfrom=charactertransfrom/pixelSize;
+                pixelSize = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--pixel-size'));
+                camera_left = camera_left*pixelSize;
+                camera_top = camera_top*pixelSize;
+                charactertransfrom=charactertransfrom*pixelSize;
+                charactermap.style.transform = `translate3d(${-camera_left}px,${-camera_top}px,0)`;
+            }
+            setTimeout(function(){resize();},500)
+            
+        }
+
+        function start(){
+            console.log("start");
+            if(url!=""){
+                if(url.indexOf("?")!=1){
+                    var fromanothergame = url.substr(url.indexOf("=")+1)
+                    console.log("from another game");
+                    console.log(fromanothergame);
+                    var i=0;
+                    var l=0;
+                    do{
+                        if(fromanothergame[i]==","){
+                            l++
+                        }
+                        else{
+                            switch(l){
+                                    case(0):currentX=parseInt(fromanothergame[i]);
+                                            console.log(currentX);
+                                            break;
+                                    case(1):currentY=parseInt(fromanothergame[i]);
+                                            console.log(currentY);
+                                            break;
+                                    case(2):round=parseInt(fromanothergame[i]);
+                                            console.log(round);
+                                            break;
+                                    case(3):score+=fromanothergame[i];
+                                            console.log(score);
+                                            break;
+                                    case(4):random[(l-4)]=parseInt(fromanothergame[i]);
+                                            break;
+                                    case(5):random[(l-4)]=parseInt(fromanothergame[i]);
+                                            break;
+                                    case(6):random[(l-4)]=parseInt(fromanothergame[i]);
+                                            break;
+                                    case(7):random[(l-4)]=parseInt(fromanothergame[i]);
+                                            break;
+                                    case(8):random[(l-4)]=parseInt(fromanothergame[i]);
+                                            break;
+                                    case(9):random[(l-4)]=parseInt(fromanothergame[i]);
+                                            break;
+                                    case(10):random[(l-4)]=parseInt(fromanothergame[i]);
+                                            break;
+                                    case(11):random[(l-4)]=parseInt(fromanothergame[i]);
+                                            break;
+                                    case(12):random[(l-4)]=parseInt(fromanothergame[i]);
+                                            break;
+                            }
+                        }
+                        i++;
+                    }while(fromanothergame[i]!=null);
+                    score=parseInt(score);
+                    console.log(score);
+                    checkMap=mapall[currentY];
+                    camera_left=(currentX-1)*50*pixelSize;
+                    camera_top=(currentY-1)*50*pixelSize;;
+                    charactermap.style.transform = `translate3d(${-camera_left}px,${-camera_top}px,0)`;
+                    items[round-1].style.display="initial"; 
+                }
+                scoremessage.innerHTML="score:"+score;
+            }
+            else{
+                currentX=0;
+                currentY=4;
+                checkMap=mapall[currentY];
+                console.log(pixelSize);
+                characteranimation1();
+                camera_left = -50*pixelSize;
+                camera_top = 150*pixelSize;
+                score=10000;
+                scoremessage.innerHTML="score:"+score;
+                round=1;
+                charactermap.style.transform = `translate3d(${-camera_left}px,${-camera_top}px,0)`;
+                items[0].style.display="initial";
+                for(i=0;i<100;i++){
+                    randomnum();
+                }
+            }
+            for(i=0;i<9;i++){
+                    items[i].setAttribute("id", `item${(random[i])}`);
+            }
+            console.log(random);
+            console.log(items);
+            if(round==7){
+                final();
+            }
+        }
+        function randomnum(){
+            var temp,First,Second;
+            First = Math.floor(Math.random() * (random.length-1));
+            Second = Math.floor(Math.random() * (random.length-1));
+            temp = random[First];
+            random[First] = random[Second];
+            random[Second] = temp;
+        }
+        function talkanimation(){
+            var talk=document.getElementById("word");
+            talkwidth+=5;
+            talk.style.width=`${talkwidth}%`;
+            if(talkwidth<70){
+                setTimeout(function(){talkanimation();},200)
+            }
+        }
+        function characteranimation1(){
+            if(ancount<4){
+                charactertransfrom=charactertransfrom-75*pixelSize;
+                character.style.transform=`translateX(${charactertransfrom}px)`;
+                ancount++;
+                setTimeout(function(){characteranimation1();},500)
+            }
+            else{
+                characteranimation2();
+            }
+        }
+        function characteranimation2(){
+            if(ancount>0){
+                charactertransfrom=charactertransfrom+75*pixelSize;
+                character.style.transform=`translateX(${charactertransfrom}px)`;
+                ancount--;
+                setTimeout(function(){characteranimation2();},500)
+            }
+            else{
+                characteranimation1();
+            }
+        }
+        window.addEventListener("keydown",move,false);
+        function move(key){
+            if(stop==0){
+                if(currentX!=0){
+                    if(key.keyCode=="65"||key==65){
+                        console.log("Pressed a");
+                        if(checkMap[currentX-1]==1){
+                            currentX=currentX-1;
+                            camera_left=camera_left-50*pixelSize;
+                            charactermap.style.transform = `translate3d(${-camera_left}px,${-camera_top}px,0)`;
+                            score=score-100;
+                        }
+                    }
+                }
+                if(currentY!=9){
+                    if(key.keyCode=="83"||key==83){
+                        console.log("Pressed s");
+                        checkMap=mapall[currentY+1];
+                        if(checkMap[currentX]==1){
+                            currentY=currentY+1;
+                            camera_top=camera_top+50*pixelSize;
+                            charactermap.style.transform = `translate3d(${-camera_left}px,${-camera_top}px,0)`;
+                            score=score-100;
+                        }
+                        else{
+                            checkMap=mapall[currentY];
+                        }
+                    }
+                }
+                if(currentX!=9){
+                    if(key.keyCode=="68"||key==68){
+                        console.log("Pressed d");
+                        if(checkMap[currentX+1]==1){
+                            currentX=currentX+1;
+                            camera_left=camera_left+50*pixelSize;
+                            charactermap.style.transform = `translate3d(${-camera_left}px,${-camera_top}px,0)`;
+                            score=score-100;
+                        }
+                    }
+                }
+                if(currentY!=0){
+                    if(key.keyCode=="87"||key==87){
+                        console.log("Pressed w");
+                        checkMap=mapall[currentY-1];
+                        if(checkMap[currentX]==1){
+                            currentY=currentY-1;
+                            camera_top=camera_top-50*pixelSize;
+                            charactermap.style.transform = `translate3d(${-camera_left}px,${-camera_top}px,0)`;
+                            score=score-100;
+                        }
+                        else{
+                            checkMap=mapall[currentY];
+                        }
+                    }
+                }
+                console.log(currentX+""+currentY);
+                if(currentX==1&&currentY==0&&random[(round-1)]==1){
+                    stop=1;
+                    eventitem("在地上發現一盒子","打開","離開",2,0);
+                }
+                if(currentX==3&&currentY==2&&random[(round-1)]==2){
+                    stop=1;
+                    eventitem("在地上發現一盒子","打開","離開",2,1);
+                }
+                if(currentX==3&&currentY==0&&random[(round-1)]==3){
+                    stop=1;
+                    eventitem("在地上發現一盒子","打開","離開",2,2);
+                }
+                if(currentX==7&&currentY==0&&random[(round-1)]==4){
+                    stop=1;
+                    eventitem("在地上發現一盒子","打開","離開",2,3);
+                }
+                if(currentX==3&&currentY==9&&random[(round-1)]==5){
+                    stop=1;
+                    eventitem("在地上發現一盒子","打開","離開",2,4);
+                }
+                if(currentX==2&&currentY==8&&random[(round-1)]==6){
+                    stop=1;
+                    eventitem("在地上發現一盒子","打開","離開",2,5);
+                }
+                if(currentX==0&&currentY==9&&random[(round-1)]==7){
+                    stop=1;
+                    eventitem("在地上發現一盒子","打開","離開",2,6);
+                }
+                if(currentX==6&&currentY==5&&random[(round-1)]==8){
+                    stop=1;
+                    eventitem("在地上發現一盒子","打開","離開",2,7);
+                }
+                if(currentX==7&&currentY==2&&random[(round-1)]==9){
+                    stop=1;
+                    eventitem("在地上發現一盒子","打開","離開",2,8);
+                }
+                if(currentX==9&&currentY==0&&checkwin==1){
+                    stop=1;
+                    win()
+                }
+                scoremessage.innerHTML="score:"+score;
+            }
+        }
+        function eventitem(text,choice1,choice2,choicenum,itemnum){
+            for(i=0; i<4;i++){
+            direction[i].style.display ="none";
+            }
+            itemsnum=itemnum;
+            div.style.display="initial";
+            div.children[1].innerHTML=text;
+            talkanimation();
+            choices= document.createElement("div");
+            choices.className="choice";
+            console.log(div);
+            div.children[0].appendChild(choices);
+            choices.appendChild(document.createElement("div"));
+            choices.children[0].style.display="initial";
+            choices.children[0].innerHTML=choice1;
+            if(itemsnum==0){
+                choices.children[0].addEventListener("click",anothergame);
+            }
+            else{
+                choices.children[0].addEventListener("click",anothergame);
+            }
+            choices.appendChild(document.createElement("div"));
+            choices.children[1].innerHTML=choice2;
+            if(choicenum==2){
+                choices.children[1].style.display="initial";
+                choices.children[1].addEventListener("click",leave);
+            }
+        }
+        function eventresult(){
+            choices.children[0].style.display="none";
+            choices.children[1].style.display="none";
+            div.style.display="none";
+            items[itemsnum].style.display="none";
+            items[itemsnum+1].style.display="initial";
+            stop=0;
+        }
+        function leave(){
+            for(i=0; i<4;i++){
+            direction[i].style.display ="block";
+            }
+            choices.children[0].style.display="none";
+            choices.children[1].style.display="none";
+            div.style.display="none";
+            stop=0;
+        }
+        function final(){
+            var door=document.getElementById("door");
+            door.style.display="initial";
+            div.style.display="initial";
+            div.children[1].innerHTML="the door appear";
+            stop=1;
+            talkanimation();
+            setTimeout(function(){
+                div.style.display="none";
+                stop=0;
+            },2000)
+            checkwin=1;
+        }
+        
+        function resetGame(){
+            window.location.href="index.html";
+        }
+        function win(){
+            var all=document.getElementsByClassName("all");
+            all[0].style.display="none";
+            var screenshow=document.getElementsByClassName("screen");
+            screenshow[0].children[1].innerHTML="you escaped";
+            screenshow[0].children[2].innerHTML="score:"+score;
+        }
+        //跳转到21点或者翻牌游戏
+        function anothergame(){
+            var toanothergame = [currentX,currentY,round,score,random];
+            if(round%2 ==0){
+                window.location.href="21point.html?value="+toanothergame;
+            }
+            else{
+                window.location.href="flipcardGame.html?value="+toanothergame;
+            }
+        }
+        
+        
+         window.onload=function () {  
+        document.addEventListener('touchstart',function (event) {  
+            if(event.touches.length>1){  
+                event.preventDefault();  //阻止元素的默认行为
+            }  
+        })  
+        var lastTouchEnd=0;  
+        document.addEventListener('touchend',function (event) {  
+            var now=(new Date()).getTime();  
+            if(now-lastTouchEnd<=300){  
+                event.preventDefault();  
+            }  
+            lastTouchEnd=now;  //当前为最后一次触摸
+        },false)  
+    }
+  //document.write(id)
+    </script>
+</body>
+</html>

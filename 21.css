@@ -1,0 +1,164 @@
+
+body{
+    background-color: lightblue;
+}
+
+.box{
+    position: relative;
+    width: 800px;
+    height: 800px;
+    margin: 0 auto;
+    background-color: aquamarine;
+}
+
+@media only screen and (max-width: 920px) {
+    .box{ 
+    top:240px;
+    position: relative;
+    width: 800px;
+    height: 800px;
+   
+    background-color: aquamarine;
+    }
+}
+
+.greenBox{  
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 720px;
+    height: 720px;
+    border: 40px solid aquamarine;
+}
+
+.ai_card{
+    position: absolute;
+    left:30%;
+    top: 4%;
+}
+
+.ai_card img{
+    position: absolute;
+    width:6em;
+}
+
+.play_card{
+    position: absolute;
+    top:75%;
+    left:30%;
+}
+
+.play_card img{
+    position: absolute;
+    width:6em;
+}
+
+.dealCard {
+    position: absolute;
+    top:40%;
+    left:40%;
+}
+
+.dealCard img {
+    position: absolute;
+    transform: rotate(90deg);
+    width:6em;
+}
+
+.dealCard_1{
+    position: absolute;
+    top:40%;
+    left:41%;
+}
+
+.dealCard_1 img{
+    position: absolute;
+    transform: rotate(90deg);
+    width:6em;
+}
+
+.dealCard_2{
+    position: absolute;
+    top:40%;
+    left:40%;
+}
+
+.dealCard_2 img{
+    position: absolute;
+    transform: rotate(90deg);
+    width:6em;
+}
+
+.dealCard_3{
+    position: absolute;
+    top:40%;
+    left:40%;
+}
+
+.dealCard_3 img{
+    position: absolute;
+    transform: rotate(90deg);
+    width:6em;
+}
+
+.dealCard_4{
+    position: absolute;
+    top:40%;
+    left:40%;
+}
+
+.dealCard_4 img{
+    position: absolute;
+    transform: rotate(90deg);
+    width:6em;
+}
+
+.btn {
+    position: absolute;
+    top:80%;
+    
+    right:5%;
+}
+
+button{
+position: relative;
+    height: 50px;
+    width: 100px;
+    border-radius: 50px;
+    border: none;
+    outline: none;
+    background: #fff;
+    color: #111;
+    font-size: 17px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer
+}
+
+
+
+.take_card{
+   display:inline;
+margin-bottom: 10px;
+}
+
+.stop_card{
+    display:inline-flex; 
+}
+
+.level{
+    position: absolute;
+    font-size: 35px;
+    left:4%;
+    top:45%;
+}
+
+
+
+.tips{
+    position: absolute;
+    font-size: 30px;
+    right:5%;
+    top:45%;
+    color: black;
+}
